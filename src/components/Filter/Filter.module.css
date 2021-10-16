@@ -1,0 +1,24 @@
+.container {
+  justify-content: center;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.input {
+  margin: 0 auto;
+  display: block;
+  padding: 5px 5px;
+
+  border-color: teal;
+  border-radius: 5px;
+}
+
+.input:focus,
+.input:focus-visible,
+.input:active {
+  display: block;
+  padding: 5px 5px;
+
+  border-color: red;
+  outline-color: red;
+}
