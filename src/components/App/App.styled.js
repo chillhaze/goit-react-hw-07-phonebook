@@ -17,3 +17,10 @@ export const Title = styled.h1`
   display: flex;
   align-items: center;
 `;
+export const LoaderWrapper = styled.div`
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 40%;
+  left: 47%;
+`;

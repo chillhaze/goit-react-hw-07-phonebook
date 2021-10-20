@@ -4,14 +4,15 @@ import ContactForm from '../ContactForm';
 import Filter from '../Filter';
 import ContactList from '../ContactList';
 import { useGetAllContactsQuery } from 'redux/contacts/contacts-slice';
-import { Container, Title } from './App.styled';
+import Loader from 'react-loader-spinner';
+import { Container, Title, LoaderWrapper } from './App.styled';
 
 const App = () => {
   const { data, error, isFetching } = useGetAllContactsQuery('');
   return (
     <>
       {error && <Title>{error.status} Not Found</Title>}
-      {data && !isFetching && (
+      {data && !isFetching ? (
         <Container>
           <Title>
             Phonebook <RiContactsBook2Fill style={{ marginLeft: '3' }} />
@@ -24,6 +25,10 @@ const App = () => {
           </Title>
           <ContactList />
         </Container>
+      ) : (
+        <LoaderWrapper>
+          <Loader type="TailSpin" color="teal" height={80} width={80} />
+        </LoaderWrapper>
       )}
     </>
   );
