@@ -4,7 +4,7 @@ export const ListItem = styled.li`
   position: relative;
   min-width: 160px;
   width: 22%;
-  padding: 10px 15px;
+  padding: 10px 10px;
   margin: 7px;
 
   color: rgb(111, 121, 124);
