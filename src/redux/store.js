@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { phoneBookReducer } from './contacts/contacts-reducer';
+import { filteredReducer } from './contacts/contacts-reducer';
 import {
   FLUSH,
   REHYDRATE,
@@ -7,11 +7,9 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-  persistStore,
-  persistReducer,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
+import { contactsApi } from './contacts/contacts-slice';
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -22,26 +20,48 @@ const middleware = [
   logger,
 ];
 
+export const store = configureStore({
+  reducer: {
+    [contactsApi.reducerPath]: contactsApi.reducer,
+    filtered: filteredReducer,
+  },
+  middleware: [...middleware, contactsApi.middleware],
+  devTools: process.env.NODE_ENV === 'development',
+});
+
+// Code without RTK-----------------------------------
+// const middleware = [
+//   ...getDefaultMiddleware({
+//     serializableCheck: {
+//       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//     },
+//   }),
+//   logger,
+// ];
+
 //Просмотр фунций-прослоек в console.log
 // console.log(middleware);
 
-//--------------стейт в localstorage, без phoneBookReducer.filtered (добавил blacklist)
-const contactsPersistConfig = {
-  key: 'contacts',
-  storage,
-  blacklist: ['filtered'],
-};
+//-----------------------------------------
+// стейт в localstorage, без phoneBookReducer.filtered(добавил blacklist)
+// const contactsPersistConfig = {
+//   key: 'contacts',
+//   storage,
+//   blacklist: ['filtered'],
+// };
 
-export const store = configureStore({
-  reducer: {
-    phonebook: persistReducer(contactsPersistConfig, phoneBookReducer),
-  },
-  middleware,
-  devTools: process.env.NODE_ENV === 'development', //по умолчанию true, можно не указывать их в объекте, включаем только в режиме разработки через NODE_ENV
-});
+// export const store = configureStore({
+//   reducer: {
+//     // вариант объекта с local storage, также раскоментировать PersistGate в index.js
+//     // phonebook: persistReducer(contactsPersistConfig, phoneBookReducer),
+//     phonebook: phoneBookReducer,
+//   },
+//   middleware,
+//   devTools: process.env.NODE_ENV === 'development', //по умолчанию true, можно не указывать их в объекте, включаем только в режиме разработки через NODE_ENV
+// });
 //-----------------------------------------
 
-//--------------весь стейт в localstorage
+//----------------------------------------- весь стейт в localstorage
 // const contactsPersistConfig = {
 //   key: 'contacts',
 //   storage,
@@ -59,4 +79,4 @@ export const store = configureStore({
 // });
 //-----------------------------------------
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);

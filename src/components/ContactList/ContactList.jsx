@@ -1,43 +1,44 @@
 import PropTypes from 'prop-types';
-import css from './ContactList.module.css';
-import { ContactItem } from './ContactItem';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contacts/contacts-actions';
+import Loader from 'react-loader-spinner';
+import { ContactItem } from '../ContactItem/ContactItem';
+import { useSelector } from 'react-redux';
+import { getFiltered } from 'redux/contacts/contacts-selectors';
 import {
-  getContacts,
-  getFiltered,
-} from '../../redux/contacts/contacts-selectors';
+  useGetAllContactsQuery,
+  useDeleteContactMutation,
+} from 'redux/contacts/contacts-slice';
+import { Container, List } from './ContactList.styled';
 
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
+  const { data, isFetching } = useGetAllContactsQuery('');
+  const [deleteContact] = useDeleteContactMutation();
+
   const filtered = useSelector(getFiltered);
 
-  //короткая запись, лучше по одному вытягивать значения
-  // const { contacts, filtered } = useSelector(state => state.phonebook);
-
-  const filteredContacts = contacts.filter(item =>
+  const filteredContacts = data.filter(item =>
     item.name.toLowerCase().includes(filtered.toLowerCase()),
   );
 
-  const dispatch = useDispatch();
-
   return (
-    <div className={css.container}>
-      <ul className={css.contactsList}>
-        {filteredContacts.map(({ id, name, number }) => {
-          return (
-            <ContactItem
-              key={id}
-              id={id}
-              name={name}
-              number={number}
-              onDeleteBtnPush={() => dispatch(deleteContact(id))}
-            />
-          );
-        })}
-      </ul>
-    </div>
+    <Container>
+      <List>
+        {isFetching && (
+          <Loader type="BallTriangle" color="teal" height={80} width={80} />
+        )}
+        {data &&
+          filteredContacts.map(({ id, name, number }) => {
+            return (
+              <ContactItem
+                key={id}
+                id={id}
+                name={name}
+                number={number}
+                onDeleteBtnPush={deleteContact}
+              />
+            );
+          })}
+      </List>
+    </Container>
   );
 };
 
@@ -46,23 +47,4 @@ ContactList.propTypes = {
   onDeleteBtnPush: PropTypes.func,
 };
 
-// const mapStateToProps = state => {
-//   const { contacts, filtered } = state.phonebook;
-
-//   const filteredContacts = contacts.filter(item =>
-//     item.name.toLowerCase().includes(filtered.toLowerCase()),
-//   );
-//   return {
-//     contacts: filteredContacts,
-//     filtered: state.filtered,
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     deleteContact: id => dispatch(deleteContact(id)),
-//   };
-// };
-//на хуках удаляю connect, mapStateToProps,mapDispatchToProps - использую useSelector, useDispatch
-// export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
 export default ContactList;

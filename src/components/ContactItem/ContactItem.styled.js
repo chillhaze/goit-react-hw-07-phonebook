@@ -1,21 +1,6 @@
-.container {
-  /* margin: 0 auto 20px; */
-  /* padding: 20px 10px; */
+import styled from '@emotion/styled';
 
-  max-width: 800px;
-}
-
-.contactsList {
-  padding: 20px 5px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  border: 1px solid teal;
-  border-radius: 5px;
-}
-
-.listItem {
+export const ListItem = styled.li`
   position: relative;
   min-width: 160px;
   width: 22%;
@@ -33,22 +18,18 @@
 
   transition: transform 0.25s linear, -webkit-transform 0.25s linear;
   overflow: hidden;
-}
 
-.listItem:hover {
-  transform: scale(1.1);
-}
-
-.contactIcon {
-  padding-top: 2px;
-  margin-right: 5px;
-}
-
-.number {
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+export const Name = styled.p`
+  font-weight: 400;
+`;
+export const Number = styled.p`
   font-weight: 600;
-}
-
-.btnDelete {
+`;
+export const BtnDelete = styled.button`
   padding: 5px;
   font-size: 20px;
   line-height: 10px;
@@ -60,4 +41,4 @@
   outline: 0;
   background-color: transparent;
   cursor: pointer;
-}
+`;

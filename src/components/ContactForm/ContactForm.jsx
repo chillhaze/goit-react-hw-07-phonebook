@@ -1,20 +1,17 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-import css from './ContactForm.module.css';
-
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/contacts-actions';
+import { Container, Form, Label, Input, Btn } from './ContactForm.styled';
+import {
+  useCreateContactMutation,
+  useGetAllContactsQuery,
+} from 'redux/contacts/contacts-slice';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  // console.log('ContactForm contacts: ', contacts);
-  // console.log('ContactForm onSubmit: ', addContact);
-
-  const dispatch = useDispatch();
+  const [createContact] = useCreateContactMutation();
+  const { data } = useGetAllContactsQuery('');
 
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
@@ -36,7 +33,17 @@ const ContactForm = () => {
 
   const handleOnSubmit = e => {
     e.preventDefault();
-    dispatch(addContact(name, number));
+
+    const newContact = {
+      name: name,
+      number: number,
+    };
+
+    if (data.find(item => item.name === name)) {
+      alert(`${name + ' is already in contacts'}`);
+      return;
+    }
+    createContact(newContact);
     formReset();
   };
 
@@ -46,11 +53,11 @@ const ContactForm = () => {
   };
 
   return (
-    <div className={css.container}>
-      <form className={css.form} onSubmit={handleOnSubmit}>
-        <label className={css.label} htmlFor={nameInputId}>
+    <Container>
+      <Form onSubmit={handleOnSubmit}>
+        <Label htmlFor={nameInputId}>
           Name
-          <input
+          <Input
             type="text"
             placeholder="Mark Zuckerberg"
             name="name"
@@ -59,14 +66,13 @@ const ContactForm = () => {
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
             onChange={handleFormChange}
-            className={css.input}
             id={nameInputId}
           />
-        </label>
+        </Label>
 
-        <label className={css.label} htmlFor={numberInputId}>
+        <Label htmlFor={numberInputId}>
           Number
-          <input
+          <Input
             type="tel"
             placeholder="xxx-xx-xx"
             name="number"
@@ -75,16 +81,13 @@ const ContactForm = () => {
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             required
             onChange={handleFormChange}
-            className={css.input}
             id={numberInputId}
           />
-        </label>
+        </Label>
 
-        <button type="submit" className={css.btn}>
-          Add contact
-        </button>
-      </form>
-    </div>
+        <Btn type="submit">Add contact</Btn>
+      </Form>
+    </Container>
   );
 };
 
@@ -93,11 +96,4 @@ ContactForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     addContact: (name, number) => dispatch(addContact(name, number)),
-//   };
-// };
-
-// export default connect(null, mapDispatchToProps)(ContactForm);
 export default ContactForm;

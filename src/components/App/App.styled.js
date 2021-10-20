@@ -1,28 +1,12 @@
-.container {
+import styled from '@emotion/styled';
+
+export const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 10px;
-}
-
-.container h1 {
+`;
+export const Title = styled.h1`
   padding: 5px;
-  line-height: 20px;
-
-  color: teal;
-  font-size: 15px;
-  line-height: 20px;
-}
-
-.container h2 {
-  padding: 5px;
-  line-height: 20px;
-
-  color: teal;
-  font-size: 15px;
-  line-height: 20px;
-}
-
-.title {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: teal;
   font-size: 15px;
@@ -32,8 +16,4 @@
 
   display: flex;
   align-items: center;
-}
-
-.icon {
-  margin-left: 2px;
-}
+`;
