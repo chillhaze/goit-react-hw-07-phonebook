@@ -6,7 +6,7 @@ import Loader from 'react-loader-spinner';
 import { useDeleteContactMutation } from 'redux/contacts/contacts-slice';
 import { ListItem, Name, Number, BtnDelete } from './ContactItem.styled';
 
-export const ContactItem = ({ id, name, number, onClick, deleting }) => {
+export const ContactItem = ({ id, name, number }) => {
   const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
   return (
     <ListItem>

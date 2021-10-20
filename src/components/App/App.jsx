@@ -5,7 +5,7 @@ import Filter from '../Filter';
 import ContactList from '../ContactList';
 import { useGetAllContactsQuery } from 'redux/contacts/contacts-slice';
 import Loader from 'react-loader-spinner';
-import { Container, Title, LoaderWrapper } from './App.styled';
+import { Container, Title, SubTitle, LoaderWrapper } from './App.styled';
 
 const App = () => {
   const { data, error, isFetching } = useGetAllContactsQuery('');
@@ -19,10 +19,10 @@ const App = () => {
           </Title>
           <ContactForm />
           <Filter />
-          <Title>
+          <SubTitle>
             Contacts
             <IoMdContacts style={{ marginLeft: '3' }} />
-          </Title>
+          </SubTitle>
           <ContactList />
         </Container>
       ) : (
